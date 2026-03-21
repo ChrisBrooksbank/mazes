@@ -35,7 +35,7 @@
 
 ### Phase 5: 2D Views
 
-- [ ] Define `IView` interface (mount, unmount, render, resize) and `ViewManager` (handles switching, lifecycle) in `src/views/` (spec: 2d-views.md)
+- [x] Define `IView` interface (mount, unmount, render, resize) and `ViewManager` (handles switching, lifecycle) in `src/views/` (spec: 2d-views.md)
 - [ ] Implement `TopDownView` using Canvas 2D API: walls as lines, start=green/end=red highlights, player marker, solver color overlay, resize handler (spec: 2d-views.md)
 - [ ] Implement `IsometricView` using Canvas 2D API: isometric projection formula (`x=(col-row)*tileW/2, y=(col+row)*tileH/2`), pseudo-3D walls with height, same markers and solver overlay, resize handler (spec: 2d-views.md)
 
