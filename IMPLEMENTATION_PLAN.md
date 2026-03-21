@@ -31,7 +31,7 @@
 - [x] Implement DFS solver as `function*` yielding `SolverStep` (spec: maze-solving.md)
 - [x] Implement A\* solver using Manhattan distance heuristic, yielding `SolverStep` (spec: maze-solving.md)
 - [x] Implement Wall Follower solver (right-hand rule), yielding `SolverStep` (spec: maze-solving.md)
-- [ ] Create solver registry `src/solvers/index.ts`; add animation loop with speed slider (pause/resume/instant-complete); color-coded visualization state (visited=blue, backtracked=gray, path=gold) (spec: maze-solving.md)
+- [x] Create solver registry `src/solvers/index.ts`; add animation loop with speed slider (pause/resume/instant-complete); color-coded visualization state (visited=blue, backtracked=gray, path=gold) (spec: maze-solving.md)
 
 ### Phase 5: 2D Views
 
