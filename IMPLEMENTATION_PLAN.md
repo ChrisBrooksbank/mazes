@@ -29,7 +29,7 @@
 
 - [x] Implement BFS solver as `function*` yielding `SolverStep` (current cell, visited set, frontier, path) (spec: maze-solving.md)
 - [x] Implement DFS solver as `function*` yielding `SolverStep` (spec: maze-solving.md)
-- [ ] Implement A\* solver using Manhattan distance heuristic, yielding `SolverStep` (spec: maze-solving.md)
+- [x] Implement A\* solver using Manhattan distance heuristic, yielding `SolverStep` (spec: maze-solving.md)
 - [ ] Implement Wall Follower solver (right-hand rule), yielding `SolverStep` (spec: maze-solving.md)
 - [ ] Create solver registry `src/solvers/index.ts`; add animation loop with speed slider (pause/resume/instant-complete); color-coded visualization state (visited=blue, backtracked=gray, path=gold) (spec: maze-solving.md)
 
