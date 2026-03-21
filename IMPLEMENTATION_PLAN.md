@@ -42,7 +42,7 @@
 ### Phase 6: 3D Views
 
 - [x] Install Three.js; create `src/three/materials.ts` (shared materials) and `src/three/geometries.ts` (wall and floor mesh helpers) (spec: 3d-views.md)
-- [ ] Implement `SceneBuilder`: convert `Grid` to Three.js scene (wall box meshes, floor plane, ambient + directional lighting); cache mesh group per generation; solver changes material colors not geometry; dispose resources on regeneration (spec: 3d-views.md)
+- [x] Implement `SceneBuilder`: convert `Grid` to Three.js scene (wall box meshes, floor plane, ambient + directional lighting); cache mesh group per generation; solver changes material colors not geometry; dispose resources on regeneration (spec: 3d-views.md)
 - [ ] Implement `FirstPersonView`: PerspectiveCamera at eye level, PointerLock controls, smooth position lerp (~200ms per cell), repeating UV wall textures, register with ViewManager (spec: 3d-views.md)
 - [ ] Implement `ThirdPersonView`: reuse SceneBuilder scene, capsule avatar mesh, spring-arm chase camera (behind/above), directional movement relative to facing, register with ViewManager (spec: 3d-views.md)
 
