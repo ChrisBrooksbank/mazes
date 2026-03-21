@@ -56,7 +56,7 @@
 
 ### Phase 8: Tests
 
-- [ ] Write Vitest unit tests for Grid helpers, generators (perfect maze validation), and solvers (correct path found) (spec: maze-generation.md, maze-solving.md)
+- [x] Write Vitest unit tests for Grid helpers, generators (perfect maze validation), and solvers (correct path found) (spec: maze-generation.md, maze-solving.md)
 - [ ] Update Playwright e2e tests: page load, generate button works, view switching, player movement, PWA install prompt (spec: pwa-mobile.md)
 
 ## Completed
