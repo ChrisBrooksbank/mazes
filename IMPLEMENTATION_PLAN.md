@@ -3,14 +3,14 @@
 ## Status
 
 - Planning iterations: 1
-- Build iterations: 0
+- Build iterations: 1
 - Last updated: 2026-03-21
 
 ## Tasks
 
 ### Phase 1: Core Data Model
 
-- [ ] Create `Grid` data model: `Cell` interface (`row`, `col`, `walls {N,S,E,W}`, `visited`), `Grid` type, factory function with all walls intact, wall-removal helper that updates both adjacent cells, start/end cell markers (spec: maze-generation.md)
+- [x] Create `Grid` data model: `Cell` interface (`row`, `col`, `walls {N,S,E,W}`, `visited`), `Grid` type, factory function with all walls intact, wall-removal helper that updates both adjacent cells, start/end cell markers (spec: maze-generation.md)
 
 ### Phase 2: Maze Generation
 
