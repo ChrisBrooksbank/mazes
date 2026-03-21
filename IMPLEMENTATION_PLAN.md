@@ -27,7 +27,7 @@
 
 ### Phase 4: Maze Solving
 
-- [ ] Implement BFS solver as `function*` yielding `SolverStep` (current cell, visited set, frontier, path) (spec: maze-solving.md)
+- [x] Implement BFS solver as `function*` yielding `SolverStep` (current cell, visited set, frontier, path) (spec: maze-solving.md)
 - [ ] Implement DFS solver as `function*` yielding `SolverStep` (spec: maze-solving.md)
 - [ ] Implement A\* solver using Manhattan distance heuristic, yielding `SolverStep` (spec: maze-solving.md)
 - [ ] Implement Wall Follower solver (right-hand rule), yielding `SolverStep` (spec: maze-solving.md)
