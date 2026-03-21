@@ -16,6 +16,7 @@ import {
 } from './views/index';
 import { Toolbar } from './ui/Toolbar';
 import { HUD } from './ui/HUD';
+import { KeyboardHints } from './ui/KeyboardHints';
 import { KeyboardControls, TouchControls } from './controls';
 import type { ViewMode } from './state';
 
@@ -82,6 +83,11 @@ const toolbar = new Toolbar({
 });
 toolbar.mount(toolbarContainer);
 toolbar.setActiveView('top-down');
+
+// ── Keyboard hints ────────────────────────────────────────────────────────────
+
+const keyboardHints = new KeyboardHints();
+keyboardHints.mount(document.body);
 
 // ── Controls ──────────────────────────────────────────────────────────────────
 

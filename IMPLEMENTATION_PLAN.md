@@ -52,7 +52,7 @@
 - [x] Build `HUD` component: timer (since generation or solve start), step counter, minimap canvas overlay in 3D views (small top-down render in corner) (spec: pwa-mobile.md)
 - [x] Wire up full app in `src/main.ts`: replace scaffold, compose Toolbar + HUD + ViewManager, connect state events to view re-renders, trigger completion state when player reaches end cell (spec: player-controls.md, pwa-mobile.md)
 - [x] Configure `vite-plugin-pwa`: `registerType: 'autoUpdate'`, web app manifest (name, icons, theme_color, standalone), Workbox pre-cache all assets; add icons `public/icons/icon-192.png`, `icon-512.png`, `favicon.svg` (spec: pwa-mobile.md)
-- [ ] Add responsive CSS with custom properties and `@media` queries; add keyboard shortcut hints (spec: pwa-mobile.md)
+- [x] Add responsive CSS with custom properties and `@media` queries; add keyboard shortcut hints (spec: pwa-mobile.md)
 
 ### Phase 8: Tests
 
