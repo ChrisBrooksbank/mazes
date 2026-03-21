@@ -16,7 +16,7 @@
 
 - [x] Implement Recursive Backtracker generator as `function*` yielding `GeneratorStep` with current cell and visited set (spec: maze-generation.md)
 - [x] Implement Prim's algorithm generator as `function*` yielding `GeneratorStep` (spec: maze-generation.md)
-- [ ] Implement Kruskal's algorithm generator as `function*` yielding `GeneratorStep` (spec: maze-generation.md)
+- [x] Implement Kruskal's algorithm generator as `function*` yielding `GeneratorStep` (spec: maze-generation.md)
 - [ ] Create generator registry `src/generators/index.ts` exporting lookup by name; validate all produce perfect mazes (spec: maze-generation.md)
 
 ### Phase 3: App State & Player
