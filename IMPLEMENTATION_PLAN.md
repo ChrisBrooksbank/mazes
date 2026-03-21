@@ -22,7 +22,7 @@
 ### Phase 3: App State & Player
 
 - [x] Create `src/state.ts`: app state (current grid, player, view mode, solver state) with a simple event emitter (spec: player-controls.md)
-- [ ] Create `Player` class with grid position `{row, col}`, facing direction, world position for 3D lerp, and movement validation against `cell.walls` (spec: player-controls.md)
+- [x] Create `Player` class with grid position `{row, col}`, facing direction, world position for 3D lerp, and movement validation against `cell.walls` (spec: player-controls.md)
 - [ ] Add keyboard input handler (Arrow + WASD) and `TouchControls` D-pad overlay (visible only on touch devices, semi-transparent, bottom corner) (spec: player-controls.md)
 
 ### Phase 4: Maze Solving
