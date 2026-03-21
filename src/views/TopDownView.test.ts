@@ -34,7 +34,7 @@ function patchCanvasContext(ctx: ReturnType<typeof makeCtxMock>) {
         const el = origCreate(tag);
         if (tag === 'canvas') {
             vi.spyOn(el as HTMLCanvasElement, 'getContext').mockReturnValue(
-                ctx as unknown as CanvasRenderingContext2D
+                ctx as unknown as never
             );
         }
         return el;
