@@ -3,6 +3,7 @@ import type { AppState } from '../state';
 import type { Grid, Cell } from '../grid';
 import type { Player } from '../player';
 import { SOLVER_COLORS } from '../solvers/index';
+import { PinchZoom } from './PinchZoom';
 
 const PADDING = 12;
 const TILE_ASPECT = 0.5; // tileH = tileW * TILE_ASPECT
@@ -21,6 +22,8 @@ export class IsometricView implements IView {
     private ctx: CanvasRenderingContext2D;
     private container: HTMLElement | null = null;
     private resizeObserver: ResizeObserver;
+    private pinchZoom: PinchZoom;
+    private lastState: AppState | null = null;
 
     constructor() {
         this.canvas = document.createElement('canvas');
@@ -33,28 +36,39 @@ export class IsometricView implements IView {
         this.ctx = ctx;
 
         this.resizeObserver = new ResizeObserver(() => this.resize());
+        this.pinchZoom = new PinchZoom(() => {
+            if (this.lastState) this.render(this.lastState);
+        });
     }
 
     mount(container: HTMLElement): void {
         this.container = container;
         container.appendChild(this.canvas);
         this.resizeObserver.observe(container);
+        this.pinchZoom.attach(this.canvas);
         this.syncCanvasSize();
     }
 
     unmount(): void {
         this.resizeObserver.disconnect();
+        this.pinchZoom.detach();
         this.canvas.remove();
         this.container = null;
     }
 
     render(state: AppState): void {
+        this.lastState = state;
         const { width, height } = this.canvas;
         this.ctx.clearRect(0, 0, width, height);
 
         if (!state.grid) return;
 
         const layout = this.calcLayout(state.grid, width, height);
+
+        const ctx = this.ctx;
+        const dpr = window.devicePixelRatio ?? 1;
+        ctx.save();
+        ctx.translate(this.pinchZoom.panX * dpr, this.pinchZoom.panY * dpr);
 
         // Collect cells sorted back-to-front (painter's algorithm: lower row+col first)
         const cells: Cell[] = [];
@@ -72,6 +86,8 @@ export class IsometricView implements IView {
             this.drawWalls(cell, layout);
         }
         this.drawPlayer(state, layout);
+
+        ctx.restore();
     }
 
     resize(): void {
@@ -105,7 +121,8 @@ export class IsometricView implements IView {
         const span = grid.rows + grid.cols;
         const tileWFromWidth = (2 * availW) / span;
         const tileWFromHeight = availH / (TILE_ASPECT * (span / 2 + WALL_HEIGHT_RATIO));
-        const tileW = Math.max(4, Math.min(tileWFromWidth, tileWFromHeight));
+        const baseTileW = Math.max(4, Math.min(tileWFromWidth, tileWFromHeight));
+        const tileW = baseTileW * this.pinchZoom.zoom;
         const tileH = tileW * TILE_ASPECT;
         const wallH = tileH * WALL_HEIGHT_RATIO;
 

@@ -3,6 +3,7 @@ import type { AppState } from '../state';
 import type { Grid, Cell } from '../grid';
 import type { Player } from '../player';
 import { SOLVER_COLORS } from '../solvers/index';
+import { PinchZoom } from './PinchZoom';
 
 const PADDING = 8; // px around the maze
 
@@ -11,6 +12,8 @@ export class TopDownView implements IView {
     private ctx: CanvasRenderingContext2D;
     private container: HTMLElement | null = null;
     private resizeObserver: ResizeObserver;
+    private pinchZoom: PinchZoom;
+    private lastState: AppState | null = null;
 
     constructor() {
         this.canvas = document.createElement('canvas');
@@ -23,32 +26,46 @@ export class TopDownView implements IView {
         this.ctx = ctx;
 
         this.resizeObserver = new ResizeObserver(() => this.resize());
+        this.pinchZoom = new PinchZoom(() => {
+            if (this.lastState) this.render(this.lastState);
+        });
     }
 
     mount(container: HTMLElement): void {
         this.container = container;
         container.appendChild(this.canvas);
         this.resizeObserver.observe(container);
+        this.pinchZoom.attach(this.canvas);
         this.syncCanvasSize();
     }
 
     unmount(): void {
         this.resizeObserver.disconnect();
+        this.pinchZoom.detach();
         this.canvas.remove();
         this.container = null;
     }
 
     render(state: AppState): void {
+        this.lastState = state;
         const { width, height } = this.canvas;
         this.ctx.clearRect(0, 0, width, height);
 
         if (!state.grid) return;
 
         const { cellSize, offsetX, offsetY } = this.calcLayout(state.grid, width, height);
+
+        const ctx = this.ctx;
+        const dpr = window.devicePixelRatio ?? 1;
+        ctx.save();
+        ctx.translate(this.pinchZoom.panX * dpr, this.pinchZoom.panY * dpr);
+
         this.drawBackground(state.grid, cellSize, offsetX, offsetY);
         this.drawSolverOverlay(state, cellSize, offsetX, offsetY);
         this.drawWalls(state.grid, cellSize, offsetX, offsetY);
         this.drawPlayer(state, cellSize, offsetX, offsetY);
+
+        ctx.restore();
     }
 
     resize(): void {
@@ -79,7 +96,8 @@ export class TopDownView implements IView {
         const h = canvasH / dpr;
         const availW = w - PADDING * 2;
         const availH = h - PADDING * 2;
-        const cellSize = Math.max(4, Math.min(availW / grid.cols, availH / grid.rows));
+        const baseSize = Math.max(4, Math.min(availW / grid.cols, availH / grid.rows));
+        const cellSize = baseSize * this.pinchZoom.zoom;
         const mazeW = cellSize * grid.cols;
         const mazeH = cellSize * grid.rows;
         const offsetX = PADDING + (availW - mazeW) / 2;

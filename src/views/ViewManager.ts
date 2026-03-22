@@ -10,6 +10,7 @@ export class ViewManager {
     private views = new Map<ViewMode, IView>();
     private activeMode: ViewMode | null = null;
     private container: HTMLElement | null = null;
+    private lastState: AppState | null = null;
 
     /** Register a view implementation for a given mode. */
     register(mode: ViewMode, view: IView): void {
@@ -60,12 +61,16 @@ export class ViewManager {
 
     /** Re-render the active view with the latest state. */
     render(state: AppState): void {
+        this.lastState = state;
         this.getActive()?.render(state);
     }
 
-    /** Notify the active view that the container was resized. */
+    /** Notify the active view that the container was resized, then re-render. */
     resize(): void {
         this.getActive()?.resize();
+        if (this.lastState) {
+            this.getActive()?.render(this.lastState);
+        }
     }
 
     /** Unmount the active view and clear all registrations. */

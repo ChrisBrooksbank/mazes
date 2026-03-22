@@ -38,6 +38,7 @@ type EventMap = {
     'player:moved': unknown;
     'viewMode:changed': ViewMode;
     'solver:updated': SolverState;
+    'player:turned': unknown;
     'maze:completed': void;
 };
 

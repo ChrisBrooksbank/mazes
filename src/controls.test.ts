@@ -30,7 +30,12 @@ describe('KeyboardControls', () => {
 
     beforeEach(() => {
         ({ grid, player, events } = makeSetup());
-        controls = new KeyboardControls(player, events, () => grid);
+        controls = new KeyboardControls(
+            player,
+            events,
+            () => grid,
+            () => 'top-down' as const
+        );
         controls.mount();
     });
 
@@ -116,7 +121,12 @@ describe('KeyboardControls', () => {
     });
 
     it('does not move when grid is null', () => {
-        const nullControls = new KeyboardControls(player, events, () => null);
+        const nullControls = new KeyboardControls(
+            player,
+            events,
+            () => null,
+            () => 'top-down' as const
+        );
         nullControls.mount();
         fireKey('ArrowUp');
         expect(player.row).toBe(1);
@@ -146,7 +156,12 @@ describe('TouchControls', () => {
 
     it('does not render buttons on non-touch devices', () => {
         vi.spyOn(TouchControls, 'isTouchDevice').mockReturnValue(false);
-        const controls = new TouchControls(player, events, () => grid);
+        const controls = new TouchControls(
+            player,
+            events,
+            () => grid,
+            () => 'top-down' as const
+        );
         const parent = document.createElement('div');
         document.body.appendChild(parent);
         controls.mount(parent);
@@ -157,7 +172,12 @@ describe('TouchControls', () => {
 
     it('renders 4 directional buttons on touch devices', () => {
         vi.spyOn(TouchControls, 'isTouchDevice').mockReturnValue(true);
-        const controls = new TouchControls(player, events, () => grid);
+        const controls = new TouchControls(
+            player,
+            events,
+            () => grid,
+            () => 'top-down' as const
+        );
         const parent = document.createElement('div');
         document.body.appendChild(parent);
         controls.mount(parent);
@@ -171,7 +191,12 @@ describe('TouchControls', () => {
 
     it('removes the container on unmount', () => {
         vi.spyOn(TouchControls, 'isTouchDevice').mockReturnValue(true);
-        const controls = new TouchControls(player, events, () => grid);
+        const controls = new TouchControls(
+            player,
+            events,
+            () => grid,
+            () => 'top-down' as const
+        );
         const parent = document.createElement('div');
         document.body.appendChild(parent);
         controls.mount(parent);
@@ -185,7 +210,12 @@ describe('TouchControls', () => {
         vi.spyOn(TouchControls, 'isTouchDevice').mockReturnValue(true);
         removeWall(grid, grid.cells[1][1], grid.cells[0][1]); // open N
 
-        const controls = new TouchControls(player, events, () => grid);
+        const controls = new TouchControls(
+            player,
+            events,
+            () => grid,
+            () => 'top-down' as const
+        );
         const parent = document.createElement('div');
         document.body.appendChild(parent);
         controls.mount(parent);
@@ -207,7 +237,12 @@ describe('TouchControls', () => {
         vi.spyOn(TouchControls, 'isTouchDevice').mockReturnValue(true);
         removeWall(grid, grid.cells[1][1], grid.cells[0][1]);
 
-        const controls = new TouchControls(player, events, () => grid);
+        const controls = new TouchControls(
+            player,
+            events,
+            () => grid,
+            () => 'top-down' as const
+        );
         const parent = document.createElement('div');
         document.body.appendChild(parent);
         controls.mount(parent);

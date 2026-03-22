@@ -91,10 +91,20 @@ keyboardHints.mount(document.body);
 
 // ── Controls ──────────────────────────────────────────────────────────────────
 
-const keyboardControls = new KeyboardControls(player, events, () => state.grid);
+const keyboardControls = new KeyboardControls(
+    player,
+    events,
+    () => state.grid,
+    () => state.viewMode
+);
 keyboardControls.mount();
 
-const touchControls = new TouchControls(player, events, () => state.grid);
+const touchControls = new TouchControls(
+    player,
+    events,
+    () => state.grid,
+    () => state.viewMode
+);
 touchControls.mount(document.body);
 
 // ── Solver animation loop ─────────────────────────────────────────────────────
@@ -153,6 +163,7 @@ function handleViewChange(mode: ViewMode): void {
     viewManager.switchTo(mode);
     toolbar.setActiveView(mode);
     events.emit('viewMode:changed', mode);
+    touchControls.rebuild();
     viewManager.render(state);
     hud.update(state);
 }
@@ -162,6 +173,11 @@ function handleViewChange(mode: ViewMode): void {
 events.on('grid:changed', () => {
     viewManager.render(state);
     hud.update(state);
+});
+
+events.on('player:turned', () => {
+    state.player = player;
+    viewManager.render(state);
 });
 
 events.on('player:moved', () => {
