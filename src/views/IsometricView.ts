@@ -66,9 +66,8 @@ export class IsometricView implements IView {
         const layout = this.calcLayout(state.grid, width, height);
 
         const ctx = this.ctx;
-        const dpr = window.devicePixelRatio ?? 1;
         ctx.save();
-        ctx.translate(this.pinchZoom.panX * dpr, this.pinchZoom.panY * dpr);
+        ctx.translate(this.pinchZoom.panX, this.pinchZoom.panY);
 
         // Collect cells sorted back-to-front (painter's algorithm: lower row+col first)
         const cells: Cell[] = [];
@@ -92,6 +91,7 @@ export class IsometricView implements IView {
 
     resize(): void {
         this.syncCanvasSize();
+        if (this.lastState) this.render(this.lastState);
     }
 
     // ── Private helpers ──────────────────────────────────────────────────────

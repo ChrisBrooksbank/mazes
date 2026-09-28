@@ -165,7 +165,6 @@ export class Rex {
     /** Distance in cells from Rex to player (BFS path length). */
     distance = Infinity;
 
-    private moveInterval: ReturnType<typeof setInterval> | null = null;
     private grid: Grid | null = null;
 
     constructor() {
@@ -180,16 +179,12 @@ export class Rex {
         this.row = startRow;
         this.col = startCol;
         this._updateMeshPosition();
-        this.stop();
-        // Rex moves every 800ms
-        this.moveInterval = setInterval(() => this._step(), 800);
     }
 
+    /** Stop stalking. Movement is driven externally via stepToward(). */
     stop(): void {
-        if (this.moveInterval !== null) {
-            clearInterval(this.moveInterval);
-            this.moveInterval = null;
-        }
+        this.warning = null;
+        this.distance = Infinity;
     }
 
     /** Update Rex's warning state based on distance to player. */
@@ -202,12 +197,6 @@ export class Rex {
         this.distance = this._bfsDistance(playerRow, playerCol);
         const rexBehind = false; // simplified
         this.warning = getWarning(this.distance, rexBehind);
-    }
-
-    private _step(): void {
-        // Rex needs a target — find the player via global state
-        // We'll get the target from the last updateWarning call
-        // For now, pathfind toward the stored target
     }
 
     /** Move one step toward the given target. */

@@ -194,19 +194,29 @@ export class Toolbar {
 
     /** Get the current rows value. */
     getRows(): number {
-        return parseInt(this.rowsInput.value, 10);
+        return this.readSize(this.rowsInput);
     }
 
     /** Get the current cols value. */
     getCols(): number {
-        return parseInt(this.colsInput.value, 10);
+        return this.readSize(this.colsInput);
+    }
+
+    /** Parse a size input, clamping to its min/max (empty/invalid falls back to min). */
+    private readSize(input: HTMLInputElement): number {
+        const min = Number(input.min);
+        const max = Number(input.max);
+        const parsed = parseInt(input.value, 10);
+        const value = Number.isNaN(parsed) ? min : Math.min(max, Math.max(min, parsed));
+        input.value = String(value);
+        return value;
     }
 
     private handleGenerate(): void {
         this.options.onGenerate(
             this.generatorSelect.value as GeneratorName,
-            parseInt(this.rowsInput.value, 10),
-            parseInt(this.colsInput.value, 10)
+            this.getRows(),
+            this.getCols()
         );
         this.closeMenu();
     }

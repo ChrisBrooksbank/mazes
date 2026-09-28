@@ -59,7 +59,12 @@ export function* wallFollower(grid: Grid): Generator<SolverStep> {
                     facing = dir;
                     current = next;
                     visited.add(current);
-                    route.push(current);
+                    // Backing out of a dead end: drop the spur so the route is the simple path
+                    if (route.length >= 2 && route[route.length - 2] === current) {
+                        route.pop();
+                    } else {
+                        route.push(current);
+                    }
                     moved = true;
                     break;
                 }

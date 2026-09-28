@@ -124,6 +124,7 @@ const solverLoop = new SolverAnimationLoop({
 
 function handleGenerate(generatorName: GeneratorName, rows: number, cols: number): void {
     solverLoop.stop();
+    document.getElementById('completion-banner')?.remove();
 
     const grid = createGrid(rows, cols);
     const gen = getGenerator(generatorName)(grid);
@@ -203,6 +204,7 @@ events.on('solver:updated', () => {
 });
 
 events.on('maze:completed', () => {
+    hud.notifyCompleted();
     showCompletionBanner();
 });
 
