@@ -423,7 +423,71 @@ code {
     color: var(--accent);
 }
 
+.toolbar__quick {
+    display: none;
+}
+
 @media (max-width: 639px) {
+    .toolbar__quick {
+        display: flex;
+        flex: 1;
+        align-items: center;
+        gap: 6px;
+        min-width: 0;
+    }
+
+    .toolbar__quick-btn {
+        min-height: 44px;
+        padding: 0 14px;
+        border-radius: 8px;
+        border: 1px solid var(--border);
+        font: 600 15px var(--sans);
+        cursor: pointer;
+        white-space: nowrap;
+        touch-action: manipulation;
+    }
+
+    .toolbar__quick-btn--primary {
+        background: var(--accent);
+        border-color: var(--accent);
+        color: #fff;
+        flex: 1;
+    }
+
+    .toolbar__quick-btn--secondary {
+        background: var(--bg);
+        color: var(--text-h);
+        flex: 1;
+    }
+
+    .toolbar__quick-btn:disabled {
+        opacity: 0.4;
+    }
+
+    .toolbar__quick-views {
+        display: flex;
+        gap: 2px;
+    }
+
+    .toolbar__quick-view {
+        min-height: 44px;
+        min-width: 38px;
+        padding: 0 6px;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        background: var(--bg);
+        color: var(--text-h);
+        font: 600 12px var(--sans);
+        cursor: pointer;
+        touch-action: manipulation;
+    }
+
+    .toolbar__quick-view--active {
+        background: var(--accent-bg);
+        border-color: var(--accent-border);
+        color: var(--accent);
+    }
+
     .toolbar {
         padding: 6px 10px;
     }
