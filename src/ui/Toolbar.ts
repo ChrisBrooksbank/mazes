@@ -50,6 +50,10 @@ export class Toolbar {
     private generateBtn: HTMLButtonElement;
     private solveBtn: HTMLButtonElement;
     private viewButtons: Map<ViewMode, HTMLButtonElement> = new Map();
+    private quickBar: HTMLElement;
+    private quickGenerateBtn: HTMLButtonElement;
+    private quickSolveBtn: HTMLButtonElement;
+    private quickViewButtons: Map<ViewMode, HTMLButtonElement> = new Map();
 
     private options: ToolbarOptions;
 
@@ -147,8 +151,43 @@ export class Toolbar {
         this.menu.appendChild(document.createElement('hr'));
         this.menu.appendChild(viewGroup);
 
+        // Quick bar: always-visible primary actions on small screens
+        this.quickBar = document.createElement('div');
+        this.quickBar.className = 'toolbar__quick';
+
+        this.quickGenerateBtn = document.createElement('button');
+        this.quickGenerateBtn.type = 'button';
+        this.quickGenerateBtn.className = 'toolbar__quick-btn toolbar__quick-btn--primary';
+        this.quickGenerateBtn.textContent = 'New maze';
+        this.quickGenerateBtn.addEventListener('click', () => this.handleGenerate());
+
+        this.quickSolveBtn = document.createElement('button');
+        this.quickSolveBtn.type = 'button';
+        this.quickSolveBtn.className = 'toolbar__quick-btn toolbar__quick-btn--secondary';
+        this.quickSolveBtn.textContent = 'Solve';
+        this.quickSolveBtn.disabled = true;
+        this.quickSolveBtn.addEventListener('click', () => this.handleSolve());
+
+        const quickViews = document.createElement('div');
+        quickViews.className = 'toolbar__quick-views';
+        for (const { mode, label } of VIEW_MODES) {
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'toolbar__quick-view';
+            btn.textContent = label;
+            btn.setAttribute('aria-label', `Switch to ${mode} view`);
+            btn.addEventListener('click', () => this.options.onViewChange(mode));
+            this.quickViewButtons.set(mode, btn);
+            quickViews.appendChild(btn);
+        }
+
+        this.quickBar.appendChild(this.quickGenerateBtn);
+        this.quickBar.appendChild(this.quickSolveBtn);
+        this.quickBar.appendChild(quickViews);
+
         // Assemble nav
         this.nav.appendChild(this.hamburger);
+        this.nav.appendChild(this.quickBar);
         this.nav.appendChild(this.menu);
 
         // Bind event handlers
@@ -186,11 +225,15 @@ export class Toolbar {
             btn.classList.toggle('toolbar__view-btn--active', m === mode);
             btn.setAttribute('aria-pressed', String(m === mode));
         }
+        for (const [m, btn] of this.quickViewButtons) {
+            btn.classList.toggle('toolbar__quick-view--active', m === mode);
+        }
     }
 
     /** Enable or disable the Solve button. */
     setSolveEnabled(enabled: boolean): void {
         this.solveBtn.disabled = !enabled;
+        this.quickSolveBtn.disabled = !enabled;
     }
 
     /** Get the currently selected generator name. */
