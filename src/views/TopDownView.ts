@@ -62,6 +62,16 @@ export class TopDownView implements IView {
         this.drawBackground(state.grid, cellSize, offsetX, offsetY);
         this.drawSolverOverlay(state, cellSize, offsetX, offsetY);
         this.drawWalls(state.grid, cellSize, offsetX, offsetY);
+        if (state.buildCurrent) {
+            const c = state.buildCurrent;
+            ctx.fillStyle = 'rgba(251, 191, 36, 0.9)';
+            ctx.fillRect(
+                this.cellX(c.col, cellSize, offsetX) + 1,
+                this.cellY(c.row, cellSize, offsetY) + 1,
+                cellSize - 2,
+                cellSize - 2
+            );
+        }
         this.drawPlayer(state, cellSize, offsetX, offsetY);
 
         ctx.restore();

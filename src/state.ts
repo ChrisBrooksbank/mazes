@@ -29,6 +29,8 @@ export interface AppState {
     solver: SolverState;
     /** Whether the player has reached the end cell. */
     completed: boolean;
+    /** Cell currently being carved while a maze is animating its build. */
+    buildCurrent?: Cell | null;
 }
 
 // ── Event emitter ─────────────────────────────────────────────────────────────

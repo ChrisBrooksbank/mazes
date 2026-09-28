@@ -21,6 +21,9 @@ const GENERATOR_LABELS: Record<GeneratorName, string> = {
     'recursive-backtracker': 'Recursive Backtracker',
     prims: "Prim's",
     kruskals: "Kruskal's",
+    wilsons: "Wilson's",
+    'aldous-broder': 'Aldous-Broder',
+    ellers: "Eller's",
 };
 
 const SOLVER_LABELS: Record<SolverName, string> = {
@@ -43,6 +46,7 @@ export class Toolbar {
     private solverSelect: HTMLSelectElement;
     private rowsInput: HTMLInputElement;
     private colsInput: HTMLInputElement;
+    private animateInput: HTMLInputElement;
     private generateBtn: HTMLButtonElement;
     private solveBtn: HTMLButtonElement;
     private viewButtons: Map<ViewMode, HTMLButtonElement> = new Map();
@@ -80,6 +84,12 @@ export class Toolbar {
         // Size controls
         this.rowsInput = this.buildNumberInput('rows', 'Rows', 15, 3, 50);
         this.colsInput = this.buildNumberInput('cols', 'Cols', 15, 3, 50);
+
+        // Watch-build toggle
+        this.animateInput = document.createElement('input');
+        this.animateInput.type = 'checkbox';
+        this.animateInput.id = 'toolbar-animate';
+        this.animateInput.checked = true;
 
         // Generate button
         this.generateBtn = document.createElement('button');
@@ -129,6 +139,7 @@ export class Toolbar {
         this.menu.appendChild(this.buildGroup('Generator', this.generatorSelect));
         this.menu.appendChild(this.buildGroup('Rows', this.rowsInput));
         this.menu.appendChild(this.buildGroup('Cols', this.colsInput));
+        this.menu.appendChild(this.buildGroup('Watch build', this.animateInput));
         this.menu.appendChild(this.generateBtn);
         this.menu.appendChild(document.createElement('hr'));
         this.menu.appendChild(this.buildGroup('Solver', this.solverSelect));
@@ -190,6 +201,11 @@ export class Toolbar {
     /** Get the currently selected solver name. */
     getSelectedSolver(): SolverName {
         return this.solverSelect.value as SolverName;
+    }
+
+    /** Whether generation should be animated step by step. */
+    getAnimate(): boolean {
+        return this.animateInput.checked;
     }
 
     /** Get the current rows value. */

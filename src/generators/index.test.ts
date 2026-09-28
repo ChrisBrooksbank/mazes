@@ -19,7 +19,7 @@ describe('generator registry', () => {
         expect(generatorNames).toContain('recursive-backtracker');
         expect(generatorNames).toContain('prims');
         expect(generatorNames).toContain('kruskals');
-        expect(generatorNames).toHaveLength(3);
+        expect(generatorNames).toHaveLength(6);
     });
 
     it('getGenerator returns a function for each name', () => {
