@@ -2,6 +2,7 @@ import './style.css';
 import { state, events } from './state';
 import { Player } from './player';
 import { createGrid } from './grid';
+import type { Grid } from './grid';
 import { getGenerator } from './generators/index';
 import type { GeneratorName } from './generators/index';
 import { getSolver } from './solvers/index';
@@ -126,11 +127,18 @@ function handleGenerate(generatorName: GeneratorName, rows: number, cols: number
     solverLoop.stop();
     document.getElementById('completion-banner')?.remove();
 
+    stopBuild();
+
     const grid = createGrid(rows, cols);
     const gen = getGenerator(generatorName)(grid);
-    // Drain the generator to completion (instant maze generation)
-    while (!gen.next().done) {
-        /* step */
+    // Only the 2D views can show a maze mid-build (3D scenes are built once per grid)
+    const animate =
+        toolbar.getAnimate() && (state.viewMode === 'top-down' || state.viewMode === 'isometric');
+
+    if (!animate) {
+        while (!gen.next().done) {
+            /* step */
+        }
     }
 
     state.grid = grid;
@@ -147,19 +155,78 @@ function handleGenerate(generatorName: GeneratorName, rows: number, cols: number
     player.reset(0, 0, 'S');
     state.player = player;
 
-    events.emit('grid:changed', grid);
-    toolbar.setSolveEnabled(true);
     hud.notifyGenerated();
+
+    if (animate) {
+        state.buildCurrent = null;
+        toolbar.setSolveEnabled(false);
+        events.emit('grid:changed', grid);
+        startBuild(gen, grid);
+    } else {
+        state.buildCurrent = null;
+        events.emit('grid:changed', grid);
+        toolbar.setSolveEnabled(true);
+    }
+}
+
+let buildFrame: number | null = null;
+let buildGen: ReturnType<ReturnType<typeof getGenerator>> | null = null;
+
+/** Complete an in-progress animated build immediately. */
+function finishBuild(): void {
+    if (buildGen && state.grid) {
+        while (!buildGen.next().done) {
+            /* step */
+        }
+        const grid = state.grid;
+        stopBuild();
+        toolbar.setSolveEnabled(true);
+        events.emit('grid:changed', grid);
+    }
+}
+
+function stopBuild(): void {
+    buildGen = null;
+    if (buildFrame !== null) {
+        cancelAnimationFrame(buildFrame);
+        buildFrame = null;
+    }
+    state.buildCurrent = null;
+}
+
+/** Advance the generator a few steps per frame so any size finishes in ~2.5s. */
+function startBuild(gen: ReturnType<ReturnType<typeof getGenerator>>, grid: Grid): void {
+    const stepsPerFrame = Math.max(1, Math.ceil((grid.rows * grid.cols) / 150));
+    const frame = () => {
+        let done = false;
+        for (let i = 0; i < stepsPerFrame && !done; i++) {
+            const result = gen.next();
+            if (result.done) done = true;
+            else state.buildCurrent = result.value.current;
+        }
+        if (done) {
+            buildFrame = null;
+            buildGen = null;
+            state.buildCurrent = null;
+            toolbar.setSolveEnabled(true);
+        } else {
+            buildFrame = requestAnimationFrame(frame);
+        }
+        events.emit('grid:changed', grid);
+    };
+    buildGen = gen;
+    buildFrame = requestAnimationFrame(frame);
 }
 
 function handleSolve(solverName: SolverName): void {
-    if (!state.grid) return;
+    if (!state.grid || buildFrame !== null) return;
     const solver = getSolver(solverName);
     solverLoop.start(state.grid, solver);
     hud.notifySolveStarted();
 }
 
 function handleViewChange(mode: ViewMode): void {
+    if (mode === 'first-person' || mode === 'third-person') finishBuild();
     state.viewMode = mode;
     viewManager.switchTo(mode);
     toolbar.setActiveView(mode);
