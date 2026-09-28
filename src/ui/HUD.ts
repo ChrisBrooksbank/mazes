@@ -79,6 +79,14 @@ export class HUD {
         this.startTime = performance.now();
     }
 
+    /** Call when the maze is completed (freezes the timer). */
+    notifyCompleted(): void {
+        if (this.startTime !== null) {
+            this.elapsedBase += performance.now() - this.startTime;
+            this.startTime = null;
+        }
+    }
+
     /**
      * Call when solving starts (continues the timer from current elapsed).
      */

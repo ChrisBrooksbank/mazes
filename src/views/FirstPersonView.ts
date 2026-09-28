@@ -104,6 +104,7 @@ export class FirstPersonView implements IView {
     private yawStart: number = Math.PI;
     private yawElapsed: number = 0;
     private isTurning: boolean = false;
+    private lastFacing: Direction = 'S';
 
     private lastGrid: unknown = null;
 
@@ -170,6 +171,8 @@ export class FirstPersonView implements IView {
         this.warningEl?.remove();
         this.warningEl = null;
         this.renderer.domElement.remove();
+        // Force scene + Rex to be rebuilt on next render (Rex is stopped on unmount)
+        this.lastGrid = null;
         this.container = null;
     }
 
@@ -219,13 +222,14 @@ export class FirstPersonView implements IView {
 
             // Handle facing direction rotation
             const newYaw = FACING_ANGLE[player.facing];
-            if (newYaw !== this.targetYaw) {
+            if (player.facing !== this.lastFacing) {
+                this.lastFacing = player.facing;
                 this.yawStart = this.currentYaw;
-                this.targetYaw = newYaw;
-                // Pick shortest rotation path
-                let diff = this.targetYaw - this.yawStart;
-                if (diff > Math.PI) diff -= 2 * Math.PI;
-                if (diff < -Math.PI) diff += 2 * Math.PI;
+                // Pick shortest rotation path (normalise to [-π, π])
+                const diff = Math.atan2(
+                    Math.sin(newYaw - this.yawStart),
+                    Math.cos(newYaw - this.yawStart)
+                );
                 this.targetYaw = this.yawStart + diff;
                 this.yawElapsed = 0;
                 this.isTurning = true;

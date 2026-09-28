@@ -51,6 +51,11 @@ export class KeyboardControls {
         this.getViewMode = getViewMode;
 
         this.handler = (e: KeyboardEvent) => {
+            if (e.ctrlKey || e.metaKey || e.altKey) return;
+            const target = e.target as HTMLElement | null;
+            const tag = target?.tagName;
+            if (tag === 'INPUT' || tag === 'SELECT' || tag === 'TEXTAREA') return;
+
             const viewMode = this.getViewMode();
 
             if (viewMode === 'first-person') {
