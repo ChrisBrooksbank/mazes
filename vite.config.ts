@@ -7,6 +7,9 @@ export default defineConfig({
         tsconfigPaths(),
         VitePWA({
             registerType: 'autoUpdate',
+            // Serve the manifest (and SW) from the dev server too, so the PWA
+            // wiring can be exercised by the e2e suite
+            devOptions: { enabled: true },
             workbox: {
                 globPatterns: ['**/*.{js,css,html,png,svg}'],
             },

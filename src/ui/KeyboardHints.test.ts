@@ -101,4 +101,25 @@ describe('KeyboardHints', () => {
         btn.click();
         expect(btn.getAttribute('aria-expanded')).toBe('true');
     });
+
+    it('shows turn controls in first-person view and back to compass moves after', () => {
+        hints.mount(container);
+        const actions = () =>
+            [...container.querySelectorAll('.kbd-hints__action')].map(el => el.textContent);
+
+        hints.setViewMode('first-person');
+        expect(actions()).toContain('Turn left');
+        expect(actions()).not.toContain('Move West');
+
+        hints.setViewMode('top-down');
+        expect(actions()).toContain('Move West');
+        expect(container.querySelector('.kbd-hints__heading')).not.toBeNull();
+    });
+
+    it('lists the camera toggle in third-person view', () => {
+        hints.mount(container);
+        hints.setViewMode('third-person');
+        const keys = [...container.querySelectorAll('.kbd-hints__keys')].map(el => el.textContent);
+        expect(keys).toContain('O');
+    });
 });

@@ -32,6 +32,6 @@ export default tseslint.config(
         },
     },
     {
-        ignores: ['dist/', 'coverage/', 'node_modules/', 'build/'],
+        ignores: ['dist/', 'dev-dist/', 'coverage/', 'node_modules/', 'build/'],
     }
 );

@@ -2,6 +2,9 @@ dist/
 coverage/
 node_modules/
 build/
+dev-dist/
+test-results/
+playwright-report/
 *.min.js
 pnpm-lock.yaml
 package-lock.json

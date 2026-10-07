@@ -222,7 +222,8 @@ function handleSolve(solverName: SolverName): void {
     if (!state.grid || buildFrame !== null) return;
     const solver = getSolver(solverName);
     solverLoop.start(state.grid, solver);
-    hud.notifySolveStarted();
+    // Once the player has reached the exit their time is final
+    if (!state.completed) hud.notifySolveStarted();
 }
 
 function handleViewChange(mode: ViewMode): void {
@@ -230,6 +231,7 @@ function handleViewChange(mode: ViewMode): void {
     state.viewMode = mode;
     viewManager.switchTo(mode);
     toolbar.setActiveView(mode);
+    keyboardHints.setViewMode(mode);
     events.emit('viewMode:changed', mode);
     touchControls.rebuild();
     viewManager.render(state);
