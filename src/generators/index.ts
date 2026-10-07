@@ -31,6 +31,3 @@ export function getGenerator(name: GeneratorName): MazeGenerator {
 }
 
 export const generatorNames: GeneratorName[] = Object.keys(registry) as GeneratorName[];
-
-export { recursiveBacktracker, prims, kruskals, wilsons, aldousBroder, ellers };
-export type { GeneratorStep };

@@ -1,5 +1,3 @@
 {
-    "entry": ["src/main.ts"],
-    "project": ["src/**/*.{ts,tsx,js,jsx}"],
-    "ignore": ["**/*.test.ts", "**/*.spec.ts", "**/*.d.ts"]
+    "project": ["src/**/*.{ts,tsx,js,jsx}"]
 }

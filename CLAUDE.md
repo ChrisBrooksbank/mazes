@@ -22,6 +22,6 @@ npm run test:e2e     # Playwright e2e tests
 ## Architecture
 
 - `src/generators/` — Maze generation algorithms
-- `src/solvers/` — Solving algorithms (BFS, DFS, A*)
+- `src/solvers/` — Solving algorithms (BFS, DFS, A\*)
 - `src/renderers/` — 2D canvas, isometric, and Three.js 3D renderers
 - `src/components/` — UI controls

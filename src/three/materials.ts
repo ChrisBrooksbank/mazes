@@ -32,18 +32,3 @@ export const pathMaterial = new THREE.MeshLambertMaterial({
     transparent: true,
     opacity: 0.6,
 });
-
-/** Avatar / player capsule material. */
-export const avatarMaterial = new THREE.MeshLambertMaterial({ color: 0xff6600 });
-
-/** Dispose all shared materials (call on app teardown if needed). */
-export function disposeSharedMaterials(): void {
-    wallMaterial.dispose();
-    floorMaterial.dispose();
-    startMaterial.dispose();
-    endMaterial.dispose();
-    visitedMaterial.dispose();
-    backtrackedMaterial.dispose();
-    pathMaterial.dispose();
-    avatarMaterial.dispose();
-}

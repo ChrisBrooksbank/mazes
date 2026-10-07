@@ -8,7 +8,7 @@ Generate, solve, and walk through mazes in 2D, isometric, and 3D views.
 - **2D view** — Classic top-down maze view
 - **Isometric view** — Stylized angled projection
 - **3D walkthrough** — First-person perspective navigation
-- **Maze solver** — Visualize solving algorithms (BFS, DFS, A*)
+- **Maze solver** — Visualize solving algorithms (BFS, DFS, A\*)
 - **PWA** — Installable, works offline
 
 ## Tech Stack

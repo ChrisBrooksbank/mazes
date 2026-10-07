@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { TopDownView } from './TopDownView';
 import { createAppState } from '../state';
 import { createGrid } from '../grid';
@@ -63,6 +63,11 @@ function stateWithGrid(rows = 5, cols = 5): AppState {
 
 describe('TopDownView', () => {
     let ctx: ReturnType<typeof makeCtxMock>;
+
+    afterEach(() => {
+        vi.restoreAllMocks();
+        vi.unstubAllGlobals();
+    });
 
     beforeEach(() => {
         ctx = makeCtxMock();

@@ -93,8 +93,8 @@ export function buildMazeGroup(grid: Grid): THREE.Group {
 }
 
 /**
- * Recursively dispose all geometries in a group.  Materials are shared and
- * must be disposed separately via `disposeSharedMaterials`.
+ * Recursively dispose all geometries in a group.  Materials are shared module-level
+ * singletons that live for the lifetime of the app.
  */
 export function disposeGroup(group: THREE.Group): void {
     group.traverse(obj => {

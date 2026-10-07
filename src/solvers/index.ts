@@ -28,6 +28,3 @@ export const SOLVER_COLORS = {
     backtracked: '#9CA3AF', // gray
     path: '#F59E0B', // gold
 } as const;
-
-export { bfs, dfs, astar, wallFollower };
-export type { SolverStep };
