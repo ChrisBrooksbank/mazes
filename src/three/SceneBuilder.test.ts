@@ -2,7 +2,14 @@ import { describe, it, expect, beforeEach } from 'vitest';
 import * as THREE from 'three';
 import { createGrid, removeWall } from '../grid';
 import { SceneBuilder } from './SceneBuilder';
-import { floorMaterial, visitedMaterial, backtrackedMaterial, pathMaterial } from './materials';
+import {
+    floorMaterial,
+    startMaterial,
+    endMaterial,
+    visitedMaterial,
+    backtrackedMaterial,
+    pathMaterial,
+} from './materials';
 
 describe('SceneBuilder', () => {
     let builder: SceneBuilder;
@@ -157,6 +164,33 @@ describe('SceneBuilder', () => {
 
             expect(tile).toBeDefined();
             expect(tile!.material).toBe(visitedMaterial);
+        });
+        it('keeps start and end highlights on tiles the solver has not touched', () => {
+            const grid = createGrid(2, 2);
+            builder.build(grid);
+            builder.updateSolver({
+                status: 'running',
+                visited: new Set(),
+                frontier: new Set(),
+                path: [],
+                current: null,
+                stepCount: 1,
+            });
+
+            const tileAt = (x: number, z: number) => {
+                let tile: THREE.Mesh | undefined;
+                builder.scene.traverse(obj => {
+                    const m = obj as THREE.Mesh;
+                    if (!m.isMesh) return;
+                    const geo = m.geometry as THREE.BoxGeometry;
+                    if (Math.abs(geo.parameters.height - 0.1) < 0.001) {
+                        if (m.position.x === x && m.position.z === z) tile = m;
+                    }
+                });
+                return tile;
+            };
+            expect(tileAt(0, 0)!.material).toBe(startMaterial);
+            expect(tileAt(2, 2)!.material).toBe(endMaterial);
         });
     });
 

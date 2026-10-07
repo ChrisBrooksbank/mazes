@@ -78,8 +78,9 @@ export class IsometricView implements IView {
         }
         cells.sort((a, b) => a.row + a.col - (b.row + b.col));
 
+        const pathSet = new Set(state.solver.path);
         for (const cell of cells) {
-            this.drawFloor(cell, state, layout);
+            this.drawFloor(cell, state, layout, pathSet);
         }
         for (const cell of cells) {
             this.drawWalls(cell, layout);
@@ -143,11 +144,12 @@ export class IsometricView implements IView {
         };
     }
 
-    private getCellFill(cell: Cell, state: AppState): string {
+    private getCellFill(cell: Cell, state: AppState, pathSet: ReadonlySet<Cell>): string {
         const { solver } = state;
+        if (state.buildCurrent === cell) return 'rgba(251, 191, 36, 0.95)';
         if (solver.status !== 'idle') {
             if (solver.current === cell) return 'rgba(251, 191, 36, 0.95)';
-            if (solver.path.includes(cell)) return `${SOLVER_COLORS.path}cc`;
+            if (pathSet.has(cell)) return `${SOLVER_COLORS.path}cc`;
             if (solver.frontier.has(cell)) return 'rgba(167, 243, 208, 0.8)';
             if (solver.visited.has(cell)) return `${SOLVER_COLORS.visited}88`;
         }
@@ -156,7 +158,12 @@ export class IsometricView implements IView {
         return '#f8fafc';
     }
 
-    private drawFloor(cell: Cell, state: AppState, layout: IsoLayout): void {
+    private drawFloor(
+        cell: Cell,
+        state: AppState,
+        layout: IsoLayout,
+        pathSet: ReadonlySet<Cell>
+    ): void {
         const { tileW, tileH } = layout;
         const { x, y } = this.isoPos(cell.row, cell.col, layout);
         const ctx = this.ctx;
@@ -167,7 +174,7 @@ export class IsometricView implements IView {
         ctx.lineTo(x, y + tileH);
         ctx.lineTo(x - tileW / 2, y + tileH / 2);
         ctx.closePath();
-        ctx.fillStyle = this.getCellFill(cell, state);
+        ctx.fillStyle = this.getCellFill(cell, state, pathSet);
         ctx.fill();
         ctx.strokeStyle = '#94a3b8';
         ctx.lineWidth = 0.5;

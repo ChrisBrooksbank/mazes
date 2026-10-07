@@ -92,20 +92,20 @@ keyboardHints.mount(document.body);
 
 // ── Controls ──────────────────────────────────────────────────────────────────
 
+/** The grid the player may walk in — none while a maze is still being carved. */
+function getPlayableGrid(): Grid | null {
+    return buildGen ? null : state.grid;
+}
+
 const keyboardControls = new KeyboardControls(
     player,
     events,
-    () => state.grid,
+    getPlayableGrid,
     () => state.viewMode
 );
 keyboardControls.mount();
 
-const touchControls = new TouchControls(
-    player,
-    events,
-    () => state.grid,
-    () => state.viewMode
-);
+const touchControls = new TouchControls(player, events, getPlayableGrid, () => state.viewMode);
 touchControls.mount(document.body);
 
 // ── Solver animation loop ─────────────────────────────────────────────────────
