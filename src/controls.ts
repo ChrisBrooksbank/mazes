@@ -234,7 +234,7 @@ export class TouchControls {
                     }
                 };
 
-                btn.addEventListener('touchstart', handler, { passive: false });
+                btn.addEventListener('pointerdown', handler);
                 container.appendChild(btn);
             }
         } else {
@@ -254,7 +254,7 @@ export class TouchControls {
                     }
                 };
 
-                btn.addEventListener('touchstart', move, { passive: false });
+                btn.addEventListener('pointerdown', move);
                 container.appendChild(btn);
             }
         }

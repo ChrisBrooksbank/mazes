@@ -177,7 +177,8 @@ export class FirstPersonView implements IView {
     }
 
     render(state: AppState): void {
-        if (state.grid && state.grid !== this.lastGrid) {
+        const gridChanged = !!state.grid && state.grid !== this.lastGrid;
+        if (state.grid && gridChanged) {
             this.sceneBuilder.build(state.grid);
             this.lastGrid = state.grid;
             this._applyWallTextures();
@@ -211,7 +212,16 @@ export class FirstPersonView implements IView {
 
             const tx = player.col * CELL_SIZE;
             const tz = player.row * CELL_SIZE;
-            if (tx !== this.targetX || tz !== this.targetZ) {
+            if (gridChanged) {
+                // New maze (or re-mount): jump straight to the player rather than
+                // gliding through walls from wherever the camera was before
+                this.currentX = this.targetX = tx;
+                this.currentZ = this.targetZ = tz;
+                this.isLerping = false;
+                this.lastFacing = player.facing;
+                this.currentYaw = this.targetYaw = FACING_ANGLE[player.facing];
+                this.isTurning = false;
+            } else if (tx !== this.targetX || tz !== this.targetZ) {
                 this.lerpStartX = this.currentX;
                 this.lerpStartZ = this.currentZ;
                 this.targetX = tx;

@@ -185,7 +185,8 @@ export class ThirdPersonView implements IView {
     }
 
     render(state: AppState): void {
-        if (state.grid && state.grid !== this.lastGrid) {
+        const gridChanged = !!state.grid && state.grid !== this.lastGrid;
+        if (state.grid && gridChanged) {
             this.sceneBuilder.build(state.grid);
             this.lastGrid = state.grid;
             this.mazeCenterX = ((state.grid.cols - 1) * CELL_SIZE) / 2;
@@ -205,7 +206,12 @@ export class ThirdPersonView implements IView {
             const player = state.player as Player;
             const tx = player.col * CELL_SIZE;
             const tz = player.row * CELL_SIZE;
-            if (tx !== this.targetX || tz !== this.targetZ) {
+            if (gridChanged) {
+                // New maze: place the avatar at the start instead of sliding it there
+                this.currentX = this.targetX = tx;
+                this.currentZ = this.targetZ = tz;
+                this.isLerping = false;
+            } else if (tx !== this.targetX || tz !== this.targetZ) {
                 this.lerpStartX = this.currentX;
                 this.lerpStartZ = this.currentZ;
                 this.targetX = tx;

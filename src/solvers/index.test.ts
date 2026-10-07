@@ -137,6 +137,21 @@ describe('SolverAnimationLoop', () => {
         expect(onComplete.mock.calls[0][0].status).toBe('complete');
     });
 
+    it('complete() finishes when the solver has no steps left (unsolvable maze)', () => {
+        // All walls up: the solver yields one step then gives up without a path
+        const grid = createGrid(3, 3);
+        const onComplete = vi.fn();
+        const loop = new SolverAnimationLoop({ onStep: vi.fn(), onComplete });
+
+        loop.speed = 1;
+        loop.start(grid, getSolver('bfs'));
+        vi.advanceTimersByTime(1000); // consume the only step
+
+        loop.complete();
+        expect(loop.getStatus()).toBe('complete');
+        expect(onComplete).toHaveBeenCalledOnce();
+    });
+
     it('stepCount increments with each step', () => {
         const grid = generateMaze(4, 4);
         const steps: number[] = [];

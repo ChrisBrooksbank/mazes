@@ -125,7 +125,7 @@ export class SolverAnimationLoop {
             const solverState = stepToSolverState(lastStep, this.stepCount);
             this.status = 'complete';
             this.callbacks.onComplete(solverState);
-        } else if (!lastStep) {
+        } else {
             this.finishWithLastStep();
         }
     }
