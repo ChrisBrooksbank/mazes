@@ -206,7 +206,7 @@ describe('TouchControls', () => {
         vi.restoreAllMocks();
     });
 
-    it('triggers player movement on touchstart', () => {
+    it('triggers player movement on pointerdown', () => {
         vi.spyOn(TouchControls, 'isTouchDevice').mockReturnValue(true);
         removeWall(grid, grid.cells[1][1], grid.cells[0][1]); // open N
 
@@ -225,7 +225,7 @@ describe('TouchControls', () => {
         );
         expect(northBtn).not.toBeNull();
 
-        northBtn!.dispatchEvent(new TouchEvent('touchstart', { cancelable: true }));
+        northBtn!.dispatchEvent(new Event('pointerdown', { cancelable: true }));
         expect(player.row).toBe(0);
 
         controls.unmount();
@@ -253,7 +253,7 @@ describe('TouchControls', () => {
         const northBtn = Array.from(parent.querySelectorAll('button')).find(
             b => b.getAttribute('aria-label') === 'Move N'
         );
-        northBtn!.dispatchEvent(new TouchEvent('touchstart', { cancelable: true }));
+        northBtn!.dispatchEvent(new Event('pointerdown', { cancelable: true }));
         expect(listener).toHaveBeenCalledOnce();
 
         controls.unmount();

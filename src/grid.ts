@@ -1,4 +1,4 @@
-export interface Walls {
+interface Walls {
     N: boolean;
     S: boolean;
     E: boolean;

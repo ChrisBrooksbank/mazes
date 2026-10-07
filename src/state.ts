@@ -6,7 +6,7 @@ export type ViewMode = 'top-down' | 'isometric' | 'first-person' | 'third-person
 
 // ── Solver state ─────────────────────────────────────────────────────────────
 
-export type SolverStatus = 'idle' | 'running' | 'paused' | 'complete';
+type SolverStatus = 'idle' | 'running' | 'paused' | 'complete';
 
 export interface SolverState {
     status: SolverStatus;

@@ -64,7 +64,7 @@ test.describe('Generate button', () => {
         await page.waitForLoadState('networkidle');
 
         const generateBtn = page.locator('button', { hasText: 'Generate' });
-        await generateBtn.first().click({ force: true });
+        await generateBtn.first().dispatchEvent('click');
 
         // Canvas should still be present after regeneration
         await expect(page.locator('canvas').first()).toBeVisible();
@@ -76,7 +76,7 @@ test.describe('Generate button', () => {
         await page.waitForLoadState('networkidle');
 
         const generateBtn = page.locator('button', { hasText: 'Generate' });
-        await generateBtn.first().click({ force: true });
+        await generateBtn.first().dispatchEvent('click');
 
         await expect(page.locator('.hud__steps')).toHaveText('Steps: 0');
     });
@@ -89,7 +89,7 @@ test.describe('Generate button', () => {
         await expect(select).toBeAttached();
 
         const options = select.locator('option');
-        await expect(options).toHaveCount(3);
+        await expect(options).toHaveCount(6);
     });
 });
 
@@ -116,7 +116,7 @@ test.describe('View switching', () => {
         await page.waitForLoadState('networkidle');
 
         const isoBtn = page.locator('button[data-view="isometric"]');
-        await isoBtn.click({ force: true });
+        await isoBtn.dispatchEvent('click');
 
         await expect(isoBtn).toHaveClass(/toolbar__view-btn--active/);
         const topBtn = page.locator('button[data-view="top-down"]');
@@ -129,7 +129,7 @@ test.describe('View switching', () => {
 
         // Ensure top-down is active
         const topBtn = page.locator('button[data-view="top-down"]');
-        await topBtn.click({ force: true });
+        await topBtn.dispatchEvent('click');
 
         await expect(page.locator('.hud__minimap')).toBeHidden();
     });
@@ -139,7 +139,7 @@ test.describe('View switching', () => {
         await page.waitForLoadState('networkidle');
 
         const fpBtn = page.locator('button[data-view="first-person"]');
-        await fpBtn.click({ force: true });
+        await fpBtn.dispatchEvent('click');
 
         await expect(page.locator('.hud__minimap')).toBeVisible();
     });
@@ -156,7 +156,7 @@ test.describe('View switching', () => {
         await page.waitForLoadState('networkidle');
 
         for (const view of ['isometric', 'first-person', 'third-person', 'top-down']) {
-            await page.locator(`button[data-view="${view}"]`).click({ force: true });
+            await page.locator(`button[data-view="${view}"]`).dispatchEvent('click');
         }
 
         expect(errors).toEqual([]);

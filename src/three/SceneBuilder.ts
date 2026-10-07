@@ -106,7 +106,7 @@ export class SceneBuilder {
             } else if (visited.has(cell)) {
                 baseMaterial = backtrackedMaterial;
             } else {
-                baseMaterial = floorMaterial;
+                baseMaterial = this._defaultMaterial(cell);
             }
 
             mesh.material = baseMaterial;
@@ -125,14 +125,15 @@ export class SceneBuilder {
             const col = Number(colStr);
             const cell = this.currentGrid.cells[row]?.[col];
             if (!cell) continue;
-            if (cell.isStart) {
-                mesh.material = startMaterial;
-            } else if (cell.isEnd) {
-                mesh.material = endMaterial;
-            } else {
-                mesh.material = floorMaterial;
-            }
+            mesh.material = this._defaultMaterial(cell);
         }
+    }
+
+    /** Floor material for a cell with no solver overlay (start/end stay highlighted). */
+    private _defaultMaterial(cell: Cell): THREE.Material {
+        if (cell.isStart) return startMaterial;
+        if (cell.isEnd) return endMaterial;
+        return floorMaterial;
     }
 
     /**

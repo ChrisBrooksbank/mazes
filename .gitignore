@@ -33,3 +33,6 @@ blob-report/
 
 # Local Netlify folder
 .netlify
+
+# vite-plugin-pwa dev service worker output
+dev-dist/

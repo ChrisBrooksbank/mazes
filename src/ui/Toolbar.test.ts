@@ -2,15 +2,11 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { Toolbar } from './Toolbar';
 import type { ToolbarOptions } from './Toolbar';
 
-function makeOptions(): ToolbarOptions & {
-    onGenerate: ReturnType<typeof vi.fn>;
-    onSolve: ReturnType<typeof vi.fn>;
-    onViewChange: ReturnType<typeof vi.fn>;
-} {
+function makeOptions() {
     return {
-        onGenerate: vi.fn(),
-        onSolve: vi.fn(),
-        onViewChange: vi.fn(),
+        onGenerate: vi.fn<ToolbarOptions['onGenerate']>(),
+        onSolve: vi.fn<ToolbarOptions['onSolve']>(),
+        onViewChange: vi.fn<ToolbarOptions['onViewChange']>(),
     };
 }
 
