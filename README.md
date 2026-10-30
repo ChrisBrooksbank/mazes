@@ -2,6 +2,8 @@
 
 # 🌀 MAZES
 
+**Live demo:** [mazes-3d.netlify.app](https://mazes-3d.netlify.app)
+
 ### _Carve it. Crack it. Walk it. Run from it._
 
 **A pocket-sized labyrinth engine for your browser.** Watch a maze being carved one passage at a time, set a pathfinder loose on it, then drop into the corridors yourself, in flat 2D, crisp isometric, or full 3D where something green and very hungry is waiting.
